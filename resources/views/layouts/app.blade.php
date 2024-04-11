@@ -5,7 +5,9 @@
     </head>
     <body>
     <div class="navbar bg-primary text-primary-content">
+      
   <div class="flex-1">
+    
     <a class="btn btn-ghost text-xl">Rally</a>
   </div>
   <div class="flex-none gap-2">
@@ -20,19 +22,19 @@
       </div>
       <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-primary text-primary-content rounded-box w-52">
         <li>
-          <a class="justify-between">
-            Profil
+          <a href="{{ url('/test') }}" class="justify-between">
+            Editace
             <span class="badge">Nové</span>
           </a>
         </li>
-        <li><a>Nastavení</a></li>
-        <li><a>Odhlásit se</a></li>
+        <li><a href="{{ url('/cars/create') }}" >Přidávání</a></li>
+        <li><a href="{{ url('/profil') }}">Profil</a></li>
       </ul>
     </div>
   </div>
 </div>
-<script type="text/javascript" src="/js/app.js"></script>
-<script type="text/javascript" src="/resources/js/app.js"></script>
+@vite('resources/js/app.js')
+@vite('resources/css/app.css')
     </body>
 </html>
 @yield('content')

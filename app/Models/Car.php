@@ -8,7 +8,7 @@ class Car extends Model
 {
     protected $table = 'car'; 
 
-    protected $fillable = ['name', 'made', 'Company_id']; 
+    protected $fillable = ['name', 'made', 'Company_id','updated_at','deleted_at','delete_time','created_at']; 
 
     use SoftDeletes;
 
