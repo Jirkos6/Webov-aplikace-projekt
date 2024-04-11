@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($cars as $car)
+            @foreach ($data as $car)
                 <tr>
                     <td>{{ $car->id }}</td>
                     <td>{{ $car->name }}</td>
