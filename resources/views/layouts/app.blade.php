@@ -1,8 +1,7 @@
 <html>
     <head>
     @vite('resources/css/app.css')
-    <title>TEST PAGE</title>
-     
+    <title>Projekt Rally</title>
     </head>
     <body>
     <div class="navbar bg-primary text-primary-content">
@@ -32,6 +31,8 @@
     </div>
   </div>
 </div>
+<script type="text/javascript" src="/js/app.js"></script>
+<script type="text/javascript" src="/resources/js/app.js"></script>
     </body>
 </html>
 @yield('content')

@@ -13,3 +13,33 @@ import './bootstrap';
  */
 
 import './components/Example';
+
+
+function handleModal() {
+    var modal = document.getElementById("myModal");
+
+    this.openModal = function() {
+        modal.classList.remove("hidden");
+    }
+
+    this.closeModal = function() {
+        modal.classList.add("hidden");
+    }
+}
+
+var modalHandler = new handleModal();
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    var btns = document.querySelectorAll('.btn.btn-outline.btn-error');
+    btns.forEach(function(btn) {
+        btn.addEventListener('click', modalHandler.openModal);
+    });
+
+
+    var closeButton = document.querySelector('.close-button');
+    closeButton.addEventListener('click', modalHandler.closeModal);
+
+    var cancelButton = document.querySelector('.btn.btn-outline.btn-primary');
+    cancelButton.addEventListener('click', modalHandler.closeModal);
+});
