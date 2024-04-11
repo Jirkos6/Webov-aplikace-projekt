@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var modal = document.getElementById("myModal");
     var form = document.getElementById('deleteForm');
     var deleteButton = document.querySelector('.btn.btn-outline.btn-error');
-    var cancelButton = document.querySelector('.btn.btn-outline.btn-primary');
+    var cancelButton = document.querySelector('.btn.btn-outline.btn-primary'); 
 
     this.setFormAction = function(carId) {
         form.action = '/car/' + carId;
@@ -96,14 +96,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var modalHandler = {
-      openModal: setFormAction
-        
-      }
-        var modalHandler1 = {
-        closeModal: function () {
-            modal.classList.add("hidden");
-        }
-    };
+  openModal: setFormAction,
+  closeModal: function () {
+        console.log('closeModal function called');
+        modal.classList.add("hidden");
+    }
+};
+
     var btns = document.querySelectorAll('.btn.btn-outline.btn-error');
     btns.forEach(function(btn) {
         btn.addEventListener('click', function() {
@@ -112,9 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    cancelButton.addEventListener('click', function() {
-        modalHandler1.closeModal();
-    });
+
+    cancelButton.addEventListener('click', modalHandler.closeModal);
 });
+
 </script>
 @endsection
