@@ -13,6 +13,7 @@ class CarController extends Controller
     public function test()
     {
         $data = Car::all();
+        $data = Car::paginate(10);
         return view('test', ['data' => $data]);
     }
     
@@ -32,7 +33,8 @@ class CarController extends Controller
     public function create()
     {
         $companies = Company::all();
-        return view('create', ['companies' => $companies]);
+        $date = date("Y-m-d");
+        return view('create', ['companies' => $companies, 'date' => $date]);
     }
     
 
@@ -65,7 +67,8 @@ class CarController extends Controller
     {
         $car = Car::findOrFail($id);
         $companies = Company::all();
-        return view('edit', ['car' => $car, 'companies' => $companies]);
+        $date = date("Y-m-d");
+        return view('edit', ['car' => $car, 'companies' => $companies, 'date' => $date]);
     }
 
     public function update(Request $request, $id)
@@ -112,6 +115,37 @@ class CarController extends Controller
             'userMessage' => $userMessage
         ]);
     }
+    public function accountmanager()
+    {
+    $userCount = User::all()->count();  
+    $user = User::all(); 
+    $user = User::paginate(10);
+
+    return view('account-manager', ['userCount' => $userCount, 'user' => $user]);
+
+    }
+    public function accountdelete($id)
+    {
+        $user = User::find($id);
+        $user->delete();
     
-    
+        return redirect('/account/manager')->with('success', 'Uživatel úspěšně smazán!');
+    }
+    public function edituser($id)
+{
+    $userCount = User::all()->count(); 
+    $user = User::find($id);
+    return view('account-edit', ['user' => $user, 'userCount' => $userCount]);
+}
+    public function accountedit(Request $request, $id) {
+
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->role = $request->role;
+        $user->email = $request->email;
+        $user->save();
+        $request->session()->flash('success', "Nové jméno uživatele je {$user->name}, role {$user->role} a email {$user->email}!");
+        return redirect('/account/manager');
+
+    }
 }

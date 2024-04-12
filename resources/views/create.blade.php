@@ -30,7 +30,7 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="made">
                 Datum výroby:
             </label>
-            <input class="bg-accent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-accent-outline" id="made" name="made" type="date" required max="2024-04-10">
+            <input class="bg-accent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-accent-outline" id="made" name="made" type="date" required max="{{ $date }}">
         </div>
 
         <div class="mb-6">

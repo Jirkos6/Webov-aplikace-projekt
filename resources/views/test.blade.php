@@ -1,5 +1,6 @@
 @extends('layouts.app2')
 @section('content')
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var modal = document.getElementById("myModal");
@@ -115,4 +116,5 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
   </div>
 </div>
+{{ $data->links() }}
 @endsection
