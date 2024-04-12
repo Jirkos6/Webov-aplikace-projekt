@@ -17,6 +17,9 @@ return new class extends Migration {
             $table->string('name');
             $table->string('shortcut', 5);
             $table->binary('flag');
+            $table->date('deleted_at')->nullable()->default(null);
+            $table->date('created_at')->nullable()->default(null);
+            $table->date('updated_at')->nullable()->default(null);
 
         });
     }

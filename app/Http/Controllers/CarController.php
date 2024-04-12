@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Car;
 use App\Models\Company;
+use App\Models\Country;
+use App\Models\User;
 
 class CarController extends Controller
 {
@@ -84,5 +86,32 @@ class CarController extends Controller
             return redirect('/test'); 
         }
     }
+    public function dashboardgraph()
+    {
+        $carCount = Car::all()->count();
+        $carMessage = $carCount == 0 ? 'Tabulka Cars neobsahuje žádné řádky!' : '';
+    
+        $companyCount = Company::all()->count();
+        $companyMessage = $companyCount == 0 ? 'Tabulka Companies neobsahuje žádné řádky!' : '';
+    
+        $countryCount = Country::all()->count();
+        $countryMessage = $countryCount == 0 ? 'Tabulka Countries neobsahuje žádné řádky!' : '';
+
+        $userCount = User::all()->count();
+        $userMessage = $userCount == 0 ? 'Nejsou registrovaní žádní uživatelé!' : '';
+    
+
+        return view('dashboard', [
+            'carCount' => $carCount, 
+            'companyCount' => $companyCount, 
+            'countryCount' => $countryCount,
+            'carMessage' => $carMessage,
+            'companyMessage' => $companyMessage,
+            'countryMessage' => $countryMessage,
+            'userCount' => $userCount,
+            'userMessage' => $userMessage
+        ]);
+    }
+    
     
 }
