@@ -38,6 +38,7 @@
                         <td>&nbsp;&nbsp;{{ $data->role }}</td>
                         <td>&nbsp;&nbsp;{{ $data->email }}</td>
                         <td>
+                        @if (Auth::user()->role == 'admin')
                         <form action="{{ route('account.delete', $data->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
@@ -46,7 +47,7 @@
                         </td>
                         <td></td>
                         <td><a href="{{ route('edit.user', $data->id) }}" class="btn btn-outline btn-warning">Editovat</a></td>
-
+                        @endif
                        
                     </tr>
                 @endforeach

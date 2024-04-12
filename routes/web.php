@@ -21,6 +21,7 @@ use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 use Laravel\Fortify\Http\Controllers\TwoFactorSecretKeyController;
 use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 use Laravel\Fortify\RoutePath;
+use App\Http\Middleware\EnsureUserHasAdminRole;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,21 +39,16 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [CarController::class, 'dashboardgraph'])->name('dashboard');
     Route::get('/account/manager', [CarController::class, 'accountmanager'])->name('account-manager');
-    Route::delete('/user/{id}', [CarController::class, 'accountdelete'])->name('account.delete');
-    Route::get('user/edit/{id}', [CarController::class, 'edituser'])->name('edit.user');
-    Route::put('/edituser/{id}', [CarController::class, 'accountedit'])->name('account.edit');  
-    Route::delete('/car/{id}', [CarController::class, 'delete']);
-    Route::get('/cars/{id}/edit', [CarController::class, 'edit']);
-    Route::put('/cars/{id}', [CarController::class, 'update']);
-    Route::get('/cars/create', [CarController::class, 'create']);
-    Route::post('/cars', [CarController::class, 'store']);
-    
+    Route::delete('/user/{id}', [CarController::class, 'accountdelete'])->name('account.delete')->middleware(EnsureUserHasAdminRole::class);;
+    Route::put('/edituser/{id}', [CarController::class, 'accountedit'])->name('account.edit')->middleware(EnsureUserHasAdminRole::class);;  
+    Route::get('user/edit/{id}', [CarController::class, 'edituser'])->name('edit.user')->middleware(EnsureUserHasAdminRole::class);;
+    Route::delete('/car/{id}', [CarController::class, 'delete'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::get('/cars/{id}/edit', [CarController::class, 'edit'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::put('/cars/{id}', [CarController::class, 'update'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::get('/cars/create', [CarController::class, 'create'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::post('/cars', [CarController::class, 'store'])->middleware(EnsureUserHasAdminRole::class);;
+
 });
-
-
-
-
-
 
 
 
