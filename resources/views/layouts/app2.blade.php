@@ -21,6 +21,7 @@
         </div>
       </div>
       <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-primary text-primary-content rounded-box w-52">
+        @auth
         <li>
           <a href="{{ url('/test') }}" class="justify-between">
             Editace
@@ -29,6 +30,16 @@
         </li>
         <li><a href="{{ url('/cars/create') }}" >Přidávání</a></li>
         <li><a href="{{ url('/user/profile') }}">Profil</a></li>
+        @endauth
+        @guest
+        <li>
+        <a href="{{ url('/test') }}" class="justify-between">
+            Tabulka auta
+            <span class="badge">Nové</span>
+          </a>
+        </li>
+        <li><a href="{{ url('/login') }}">Přihlášení</a></li>
+        @endguest
       </ul>
     </div>
   </div>

@@ -72,10 +72,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>{{ $car->name }}</td>
                         <td>&nbsp;&nbsp;{{ $car->made }}</td>
                         <td>&nbsp;&nbsp;{{ $car->Company_id }}</td>
+                        @auth
                         <td><button class="btn btn-outline btn-error" data-id="{{ $car->id }}" onclick="setFormAction('{{ $car->id }}')">Smazat</button></td>
                         <td></td>
                         <td><a href="/cars/{{ $car->id }}/edit" class="btn btn-outline btn-warning">Editovat</a></td>
-                       
+                       @endauth
                     </tr>
                 @endforeach
             </tbody>
