@@ -1,14 +1,14 @@
 <html>
     <head>
     @vite('resources/css/app.css')
-    <title>Projekt Rally</title>
+    <title>Rally Racing</title>
     </head>
     <body>
     <div class="navbar bg-primary text-primary-content">
 
   <div class="flex-1">
 
-    <a class="btn btn-ghost text-xl" href="{{ url('/test') }}">Rally</a>
+    <a class="btn btn-ghost text-xl" href="{{ url('/test') }}">Rally Racing</a>
   </div>
   <div class="flex-none gap-2">
     <div class="form-control">
