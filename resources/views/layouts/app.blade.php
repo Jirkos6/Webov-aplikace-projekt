@@ -1,40 +1,45 @@
-<html>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-    @vite('resources/css/app.css')
-    <title>Projekt Rally</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Styles -->
+        @livewireStyles
     </head>
-    <body>
-    <div class="navbar bg-primary text-primary-content">
-      
-  <div class="flex-1">
-    
-    <a class="btn btn-ghost text-xl">Rally</a>
-  </div>
-  <div class="flex-none gap-2">
-    <div class="form-control">
-      <input type="text" placeholder="Hledat" class="input input-bordered w-24 md:w-auto" />
-    </div>
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-        <div class="w-10 rounded-full">
-          <img alt="Tailwind CSS Navbar component" src="https://cdn.iconscout.com/icon/free/png-512/free-user-1556-528036.png?f=webp&w=256" />
+    <body class="font-sans antialiased">
+        <x-banner />
+
+        <div class="min-h-screen bg-gray-100">
+            @livewire('navigation-menu')
+
+            <!-- Page Heading -->
+            @if (isset($header))
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endif
+
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
         </div>
-      </div>
-      <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-primary text-primary-content rounded-box w-52">
-        <li>
-          <a href="{{ url('/test') }}" class="justify-between">
-            Editace
-            <span class="badge">Nové</span>
-          </a>
-        </li>
-        <li><a href="{{ url('/cars/create') }}" >Přidávání</a></li>
-        <li><a href="{{ url('/profil') }}">Profil</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-@vite('resources/js/app.js')
-@vite('resources/css/app.css')
+
+        @stack('modals')
+
+        @livewireScripts
     </body>
 </html>
-@yield('content')

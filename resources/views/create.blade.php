@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 @section('content')
 
 <br>
@@ -45,10 +45,12 @@
                 Výrobce:
             </label>
             <select class="bg-accent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-accent-outline" id="Company_id" name="Company_id" required>
-                @foreach ($companies as $company)
-                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                @endforeach
-            </select>
+    <option selected disabled value="0" class="info-content">Vyberte výrobce</option>
+    @foreach ($companies as $company)
+        <option value="{{ $company->id }}">{{ $company->name }}</option>
+    @endforeach
+</select>
+
         </div>
 
         <div class="flex items-center justify-between">

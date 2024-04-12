@@ -19,7 +19,7 @@ class CarController extends Controller
         try {
             $car = Car::find($id);
             $car->delete();   
-            $car->delete_time = mktime(date("H"), date("i"), date("s")); 
+            $car->delete_time = time(); 
             $car->save();
             return back()->with('success', 'Smazání proběhlo úspěšně!');
 
@@ -41,18 +41,47 @@ class CarController extends Controller
             $car->made = $request->input('made');
             $car->name = $request->input('name');
             $car->Company_id = $request->input('Company_id');
+            $request->validate([
+                'Company_id' => 'required|not_in:0',
+            ]);
             $car->save();
     
             $company = Company::find($request->input('Company_id'))->name;
         
             $request->session()->flash('success', "Auto {$car->name} od výrobce {$company} bylo přidáno!");
-    
+            $car->create_time = time(); 
+            $car->save();
             return redirect('/test'); 
         } catch (\Exception $e) {
             
             $request->session()->flash('error', "Nastala chyba při přidávání auta! {$e->getMessage()}");
     
             return back(); 
+        }
+    }
+    public function edit($id)
+    {
+        $car = Car::findOrFail($id);
+        $companies = Company::all();
+        return view('edit', ['car' => $car, 'companies' => $companies]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+        $car = Car::findOrFail($id);
+        $car->made = $request->input('made');
+        $car->name = $request->input('name');
+        $car->Company_id = $request->input('Company_id');
+        $company = Company::find($request->input('Company_id'))->name;
+        $car->edit_time = time(); 
+        $car->save();
+        $request->session()->flash('success', "Auto bylo editováno na {$car->name}, vyrobeno {$car->made} od společnosti {$company}!");
+        return redirect('/test'); 
+        }
+        catch (\Exception $e)  {
+            $request->session()->flash('error', "Nastala chyba při editaci auta {$car->name}! {$e->getMessage()}");
+            return redirect('/test'); 
         }
     }
     

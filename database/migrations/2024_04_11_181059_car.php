@@ -1,27 +1,39 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class CreateCarsTable extends Migration
-{
+return new class extends Migration{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
-    {
-        Schema::create('cars', function (Blueprint $table) {
-            $table->id();
+    {   
+        Schema::create('Car', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('name');
             $table->date('made');
-            $table->integer('Company_id');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->integer('Company_id')->unsigned();
+            $table->foreign('Company_id')->references('id')->on('Company')->onDelete('no action')->onUpdate('no action');
+            $table->date('deleted_at')->nullable()->default(null);
+            $table->date('created_at')->nullable()->default(null);
+            $table->date('updated_at')->nullable()->default(null);
+            $table->integer('delete_time')->nullable()->default(null);
+            $table->integer('edit_time')->nullable()->default(null);
+            $table->integer('create_time')->nullable()->default(null);
         });
     }
+
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        //
+        Schema::dropIfExists('Car');
     }
 };

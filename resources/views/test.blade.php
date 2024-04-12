@@ -1,5 +1,38 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 @section('content')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var modal = document.getElementById("myModal");
+    var form = document.getElementById('deleteForm');
+    var deleteButton = document.querySelector('.btn.btn-outline.btn-error');
+    document.querySelector('.btn.btn-outline.btn-primary').addEventListener('click', closeModal)
+    this.setFormAction = function(carId) {
+        form.action = '/car/' + carId;
+        modal.classList.remove("hidden");
+        deleteButton.dataset.id = carId;
+    }
+
+     var modalHandler = {
+  openModal: setFormAction}
+
+  function closeModal () {
+      
+        modal.classList.add("hidden");
+    }
+
+
+    var btns = document.querySelectorAll('.btn.btn-outline.btn-error');
+    btns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var carId = this.dataset.id;
+            modalHandler.openModal(carId);
+        });
+    });
+
+
+});
+
+</script>
 <br>
 @if (session('success'))
     <br>
@@ -40,7 +73,7 @@
                         <td>&nbsp;&nbsp;{{ $car->Company_id }}</td>
                         <td><button class="btn btn-outline btn-error" data-id="{{ $car->id }}" onclick="setFormAction('{{ $car->id }}')">Smazat</button></td>
                         <td></td>
-                        <td><button class="btn btn-outline btn-warning">Editovat</button></td>
+                        <td><a href="/cars/{{ $car->id }}/edit" class="btn btn-outline btn-warning">Editovat</a></td>
                        
                     </tr>
                 @endforeach
@@ -76,44 +109,10 @@
 
         &nbsp;&nbsp;&nbsp;
         <button type="button" class="btn btn-outline btn-primary" id="cancelButton">
-          Zrušit
-        </button>
+  Zrušit
+</button>
       </div>
     </div>
   </div>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var modal = document.getElementById("myModal");
-    var form = document.getElementById('deleteForm');
-    var deleteButton = document.querySelector('.btn.btn-outline.btn-error');
-    var cancelButton = document.querySelector('.btn.btn-outline.btn-primary'); 
-
-    this.setFormAction = function(carId) {
-        form.action = '/car/' + carId;
-        modal.classList.remove("hidden");
-        deleteButton.dataset.id = carId;
-    }
-
-    var modalHandler = {
-  openModal: setFormAction,
-  closeModal: function () {
-        console.log('closeModal function called');
-        modal.classList.add("hidden");
-    }
-};
-
-    var btns = document.querySelectorAll('.btn.btn-outline.btn-error');
-    btns.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            var carId = this.dataset.id;
-            modalHandler.openModal(carId);
-        });
-    });
-
-
-    cancelButton.addEventListener('click', modalHandler.closeModal);
-});
-
-</script>
 @endsection
