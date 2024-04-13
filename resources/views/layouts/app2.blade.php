@@ -22,13 +22,28 @@
       </div>
       <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-primary text-primary-content rounded-box w-52">
         @auth
+        @if (Auth::user()->role == 'admin')
         <li>
           <a href="{{ url('/test') }}" class="justify-between">
             Editace
             <span class="badge">Nové</span>
           </a>
         </li>
+        @endif
+       
+        @if (Auth::user()->role == 'default')
+        <li>
+          <a href="{{ url('/test') }}" class="justify-between">
+            Auta
+            <span class="badge">Nové</span>
+          </a>
+        </li>
+        @endif
+
+        
+        @if (Auth::user()->role == 'admin')
         <li><a href="{{ url('/cars/create') }}" >Přidávání</a></li>
+        @endif
         <li><a href="{{ url('/user/profile') }}">Profil</a></li>
         @endauth
         @guest
