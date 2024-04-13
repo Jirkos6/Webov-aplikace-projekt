@@ -38,7 +38,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [CarController::class, 'dashboardgraph'])->name('dashboard');
-    Route::get('/account/manager', [CarController::class, 'accountmanager'])->name('account-manager');
+    Route::get('/account/manager', [CarController::class, 'accountmanager'])->name('account-manager')->middleware(EnsureUserHasAdminRole::class);;
     Route::delete('/user/{id}', [CarController::class, 'accountdelete'])->name('account.delete')->middleware(EnsureUserHasAdminRole::class);;
     Route::put('/edituser/{id}', [CarController::class, 'accountedit'])->name('account.edit')->middleware(EnsureUserHasAdminRole::class);;  
     Route::get('user/edit/{id}', [CarController::class, 'edituser'])->name('edit.user')->middleware(EnsureUserHasAdminRole::class);;
