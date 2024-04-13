@@ -10,11 +10,11 @@ use App\Models\User;
 
 class CarController extends Controller
 {
-    public function test()
+    public function car()
     {
         $data = Car::all();
         $data = Car::paginate(10);
-        return view('test', ['data' => $data]);
+        return view('car', ['data' => $data]);
     }
     
     public function delete($id)
@@ -55,7 +55,7 @@ class CarController extends Controller
             $request->session()->flash('success', "Auto {$car->name} od výrobce {$company} bylo přidáno!");
             $car->create_time = time(); 
             $car->save();
-            return redirect('/test'); 
+            return redirect('/car'); 
         } catch (\Exception $e) {
             
             $request->session()->flash('error', "Nastala chyba při přidávání auta! {$e->getMessage()}");
@@ -82,11 +82,11 @@ class CarController extends Controller
         $car->edit_time = time(); 
         $car->save();
         $request->session()->flash('success', "Auto bylo editováno na {$car->name}, vyrobeno {$car->made} od společnosti {$company}!");
-        return redirect('/test'); 
+        return redirect('/car'); 
         }
         catch (\Exception $e)  {
             $request->session()->flash('error', "Nastala chyba při editaci auta {$car->name}! {$e->getMessage()}");
-            return redirect('/test'); 
+            return redirect('/car'); 
         }
     }
     public function dashboardgraph()
@@ -148,4 +148,44 @@ class CarController extends Controller
         return redirect('/account/manager');
 
     }
+    public function country() {
+    
+    $data = Country::all();
+    return view('country', ['data' => $data]);
+    }
+
+    public function countrydelete($id)
+    {
+        $country = Country::find($id);
+        $country->delete();
+    
+        return redirect('/country')->with('success', 'Země úspěšně smazána!');
+    }
+
+    public function countrycreate()
+    {
+    $country = Country::all();
+    return view('countrycreate', ['country' => $country]);
+    }
+    public function countrysave(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'shortcut' => 'required',
+        'flag' => 'required|image|mimes:jpeg,png|max:2048',
+    ]);
+
+    $imageName = time().'.'.$request->flag->extension();  
+    $request->flag->move(public_path('obrazky'), $imageName);
+
+    $country = new Country;
+    $country->name = $request->name;
+    $country->shortcut = $request->shortcut;
+    $country->flag = $imageName;
+    $country->save();
+
+    return back()
+        ->with('success',"Země '{$country->name}' se zkratkou '{$country->shortcut}' s obrázkem '/public/obrazky/{$country->flag}' byla vytvořena")
+        ->with('image',$imageName);
+}
 }

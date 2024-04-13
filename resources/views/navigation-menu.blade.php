@@ -109,17 +109,20 @@
                                 {{ __('Profil') }}
                             </x-dropdown-link>
                             @if (Auth::user()->role !== 'admin')
-                            <x-dropdown-link href="{{ url('/test') }}">
+                            <x-dropdown-link href="{{ url('/car') }}">
                                 {{ __('Auta') }}
                             </x-dropdown-link>
                             @endif
                             @if (Auth::user()->role == 'admin')
-                            <x-dropdown-link href="{{ url('/test') }}">
-                                {{ __('Editace') }}
+                            <x-dropdown-link href="{{ url('/car') }}">
+                                {{ __('Editace aut') }}
                             </x-dropdown-link>
                             
                             <x-dropdown-link href="{{ url('/cars/create') }}">
-                                {{ __('Přidávání') }}
+                                {{ __('Přidávání aut') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ url('/country/create') }}">
+                                {{ __('Přidávání zemí') }}
                             </x-dropdown-link>
                             @endif
 

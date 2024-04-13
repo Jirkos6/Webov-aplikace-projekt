@@ -28,7 +28,8 @@ Route::get('/', function () {
 });
 
 
-Route::get('test', [CarController::class, 'test']);
+Route::get('car', [CarController::class, 'car']);
+Route::get('country', [CarController::class, 'country']);
 
 
 
@@ -47,6 +48,9 @@ Route::middleware([
     Route::put('/cars/{id}', [CarController::class, 'update'])->middleware(EnsureUserHasAdminRole::class);;
     Route::get('/cars/create', [CarController::class, 'create'])->middleware(EnsureUserHasAdminRole::class);;
     Route::post('/cars', [CarController::class, 'store'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::delete('/country/delete/{id}', [CarController::class, 'countrydelete'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::get('/country/create', [CarController::class, 'countrycreate'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::post('/country/add', [CarController::class, 'countrysave'])->middleware(EnsureUserHasAdminRole::class);;
 
 });
 

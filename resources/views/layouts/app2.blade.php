@@ -8,7 +8,7 @@
 
   <div class="flex-1">
 
-    <a class="btn btn-ghost text-xl" href="{{ url('/test') }}">Rally Racing</a>
+    <a class="btn btn-ghost text-xl" href="{{ url('/car') }}">Rally Racing</a>
   </div>
   <div class="flex-none gap-2">
     <div class="form-control">
@@ -24,8 +24,20 @@
         @auth
         @if (Auth::user()->role == 'admin')
         <li>
-          <a href="{{ url('/test') }}" class="justify-between">
-            Editace
+          <a href="{{ url('/car') }}" class="justify-between">
+            Editace aut
+            <span class="badge">Nové</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url('/country') }}" class="justify-between">
+            Editace zemí
+            <span class="badge">Nové</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url('/country/create') }}" class="justify-between">
+            Přidávání zemí
             <span class="badge">Nové</span>
           </a>
         </li>
@@ -33,7 +45,7 @@
        
         @if (Auth::user()->role == 'default')
         <li>
-          <a href="{{ url('/test') }}" class="justify-between">
+          <a href="{{ url('/car') }}" class="justify-between">
             Auta
             <span class="badge">Nové</span>
           </a>
@@ -42,13 +54,13 @@
 
         
         @if (Auth::user()->role == 'admin')
-        <li><a href="{{ url('/cars/create') }}" >Přidávání</a></li>
+        <li><a href="{{ url('/cars/create') }}" >Přidávání aut</a></li>
         @endif
         <li><a href="{{ url('/user/profile') }}">Profil</a></li>
         @endauth
         @guest
         <li>
-        <a href="{{ url('/test') }}" class="justify-between">
+        <a href="{{ url('/car') }}" class="justify-between">
             Tabulka auta
             <span class="badge">Nové</span>
           </a>
