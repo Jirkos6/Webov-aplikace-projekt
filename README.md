@@ -30,3 +30,6 @@ npm run dev
 
 # 8. Momentální routy v projektu jsou 
 >"/test" "/login" pokud jsme přihlášení "/dashboard" pouze pro uživatele co mají roli admin : "/account/manager"
+# Uživatelé bez účtu se mohou dostat jen na routy /test a routy určené pro login register zapomenuté heslo
+# Uživatelé s účtem s defaultní rolí se můžou dostat do /dashboard ale nemají právo editovat přídávat nebo mazat
+# Uživatelé s účtem s rolí admin mají plné pravomoce a na routě /test můžou přidávat, editovat a mazat taky mají přístup k routě /account/manager kde vidí všechny registrované uživatele a můžou je mazat nebo jim změnit role/email/jméno
