@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             <div class="card w-full bg-base-100 shadow-xl">
                     <figure>
-                        <img src="{{ asset('obrazky/' . $country->flag) }}" alt="{{ $country->name }}" class="w-128 h-64 object-cover">
+                        <img src="{{ asset('obrazky/' . $country->flag) }}" alt="{{ $country->name }}" class="w-64 h-64 object-cover">
                     </figure>
                     <div class="card-body">
                         <h2 class="card-title">
@@ -120,6 +120,10 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
     @endif
+    <br>
+    <br>
+    <br>
+    {{ $data->links() }}
 @endsection
 
 

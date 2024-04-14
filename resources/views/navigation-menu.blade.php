@@ -112,10 +112,16 @@
                             <x-dropdown-link href="{{ url('/car') }}">
                                 {{ __('Auta') }}
                             </x-dropdown-link>
+                            <x-dropdown-link href="{{ url('/country') }}">
+                                {{ __('Země') }}
+                            </x-dropdown-link>
                             @endif
                             @if (Auth::user()->role == 'admin')
                             <x-dropdown-link href="{{ url('/car') }}">
                                 {{ __('Editace aut') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ url('/country') }}">
+                                {{ __('Editace zemí') }}
                             </x-dropdown-link>
                             
                             <x-dropdown-link href="{{ url('/cars/create') }}">

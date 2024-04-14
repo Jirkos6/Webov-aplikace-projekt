@@ -7,13 +7,16 @@ use App\Models\Car;
 use App\Models\Company;
 use App\Models\Country;
 use App\Models\User;
+use Config;
+use Illuminate\Support\Facades\DB;
+
 
 class CarController extends Controller
 {
     public function car()
     {
-        $data = Car::all();
-        $data = Car::paginate(10);
+        $data = Car::join('country', 'car.country_id', '=', 'country.id')->select('car.*', 'country.name as country_name')->orderBy('car.id')->paginate(10);
+    
         return view('car', ['data' => $data]);
     }
     
@@ -151,6 +154,8 @@ class CarController extends Controller
     public function country() {
     
     $data = Country::all();
+    $paginate = Config::get('pagination.pagination');
+    $data = Country::paginate($paginate);
     return view('country', ['data' => $data]);
     }
 

@@ -52,38 +52,39 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     <br>
     <br>
-@endif
-    @if($data->isEmpty())
-        <p>Nebyla nalezena žádná auta</p>
-    @else
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Název</th>
-                    <th>Datum výroby</th>
-                    <th>&nbsp;&nbsp;ID spol</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data as $car)
-                    <tr>
-                        <td>{{ $car->id }}</td>
-                        <td>{{ $car->name }}</td>
-                        <td>&nbsp;&nbsp;{{ $car->made }}</td>
-                        <td>&nbsp;&nbsp;{{ $car->Company_id }}</td>
-                        @auth
-                        @if (Auth::user()->role == 'admin')
-                        <td><button class="btn btn-outline btn-error" data-id="{{ $car->id }}" onclick="setFormAction('{{ $car->id }}')">Smazat</button></td>
-                        <td></td>
-                        <td><a href="/cars/{{ $car->id }}/edit" class="btn btn-outline btn-warning">Editovat</a></td>
-                        @endif
-                       @endauth
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
     @endif
+    @if($data->isEmpty())
+    <p>Nebyla nalezena žádná auta</p>
+@else
+    <table class="table-auto w-full">
+        <thead>
+            <tr>
+                <th class="px-4 py-2 text-left">ID</th>
+                <th class="px-4 py-2 text-left">Název</th>
+                <th class="px-4 py-2 text-left">Datum výroby</th>
+                <th class="px-4 py-2 text-left">Země</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($data as $car)
+                <tr>
+                    <td class="border px-4 py-2">{{ $car->id }}</td>
+                    <td class="border px-4 py-2">{{ $car->name }}</td>
+                    <td class="border px-4 py-2">{{ $car->made }}</td>
+                    <td class="border px-4 py-2">{{ $car->country_name }}</td>
+                    @auth
+                    @if (Auth::user()->role == 'admin')
+                    <td class="border px-4 py-2"><button class="btn btn-outline btn-error" data-id="{{ $car->id }}" onclick="setFormAction('{{ $car->id }}')">Smazat</button></td>
+                    <td class="border px-4 py-2"></td>
+                    <td class="border px-4 py-2"><a href="/cars/{{ $car->id }}/edit" class="btn btn-outline btn-warning">Editovat</a></td>
+                    @endif
+                   @endauth
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+@endif
+
 
 <div id="myModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
   <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -119,5 +120,8 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
   </div>
 </div>
+<br>
+<br>
+<br>
 {{ $data->links() }}
 @endsection
