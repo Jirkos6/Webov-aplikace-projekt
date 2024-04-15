@@ -30,7 +30,7 @@ use App\Http\Middleware\EnsureUserHasAdminRole;
 
 ### ROUTY PRO ZOBRAZENÍ DAT Z TABULEK CAR A COUNTRY
 Route::get('car', [CarController::class, 'car']);
-Route::get('country', [CarController::class, 'country']);
+Route::get('country', [CountryController::class, 'country']);
 
 ### ROUTY PRO PDF SOUBORY
 Route::get('/download-pdf', [PdfController::class, 'regeneratePDFs'])->name('download.pdf');
