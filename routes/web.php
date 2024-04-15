@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\PdfController;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
@@ -23,13 +26,23 @@ use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 use Laravel\Fortify\RoutePath;
 use App\Http\Middleware\EnsureUserHasAdminRole;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 
+### ROUTY PRO ZOBRAZENÍ DAT Z TABULEK CAR A COUNTRY
 Route::get('car', [CarController::class, 'car']);
 Route::get('country', [CarController::class, 'country']);
+
+### ROUTY PRO PDF SOUBORY
+Route::get('/download-pdf', [PdfController::class, 'regeneratePDFs'])->name('download.pdf');
+
+Route::get('/country-pdf', [PdfController::class, 'streamCountryPDF']);
+Route::get('/company-pdf', [PdfController::class, 'streamCompanyPDF']);
+Route::get('/car-pdf', [PdfController::class, 'streamCarPDF']);
+
+Route::get('/country-data', [PdfController::class, 'streamCountryPDF']);
+Route::get('/company-data', [PdfController::class, 'streamCompanyPDF']);
+Route::get('/car-data', [PdfController::class, 'streamCarPDF']);
+
 
 
 
@@ -38,19 +51,29 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', [CarController::class, 'dashboardgraph'])->name('dashboard');
-    Route::get('/account/manager', [CarController::class, 'accountmanager'])->name('account-manager')->middleware(EnsureUserHasAdminRole::class);;
-    Route::delete('/user/{id}', [CarController::class, 'accountdelete'])->name('account.delete')->middleware(EnsureUserHasAdminRole::class);;
-    Route::put('/edituser/{id}', [CarController::class, 'accountedit'])->name('account.edit')->middleware(EnsureUserHasAdminRole::class);;  
-    Route::get('user/edit/{id}', [CarController::class, 'edituser'])->name('edit.user')->middleware(EnsureUserHasAdminRole::class);;
-    Route::delete('/car/{id}', [CarController::class, 'delete'])->middleware(EnsureUserHasAdminRole::class);;
-    Route::get('/cars/{id}/edit', [CarController::class, 'edit'])->middleware(EnsureUserHasAdminRole::class);;
+
+    ### ROUTY PRO SPRÁVU ÚČTŮ / DASHBOARD
+    Route::get('/dashboard', [UserController::class, 'dashboardgraph'])->name('dashboard');
+    Route::get('/account/manager', [UserController::class, 'accountmanager'])->name('account-manager')->middleware(EnsureUserHasAdminRole::class);;
+    Route::delete('/user/{id}', [UserController::class, 'accountdelete'])->name('account.delete')->middleware(EnsureUserHasAdminRole::class);;
+    Route::put('/edituser/{id}', [UserController::class, 'accountedit'])->name('account.edit')->middleware(EnsureUserHasAdminRole::class);;  
+    Route::get('user/edit/{id}', [UserController::class, 'edituser'])->name('edit.user')->middleware(EnsureUserHasAdminRole::class);;
+
+    ### ROUTY PRO AUTA
+    Route::delete('/cars/{id}', [CarController::class, 'delete'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::get('/{name}/{id}/edit', [CarController::class, 'edit'])->middleware(EnsureUserHasAdminRole::class);;
     Route::put('/cars/{id}', [CarController::class, 'update'])->middleware(EnsureUserHasAdminRole::class);;
     Route::get('/cars/create', [CarController::class, 'create'])->middleware(EnsureUserHasAdminRole::class);;
     Route::post('/cars', [CarController::class, 'store'])->middleware(EnsureUserHasAdminRole::class);;
-    Route::delete('/country/delete/{id}', [CarController::class, 'countrydelete'])->middleware(EnsureUserHasAdminRole::class);;
-    Route::get('/country/create', [CarController::class, 'countrycreate'])->middleware(EnsureUserHasAdminRole::class);;
-    Route::post('/country/add', [CarController::class, 'countrysave'])->middleware(EnsureUserHasAdminRole::class);;
+
+    ### AUTA MULTI-EDIT
+    Route::get('/cars/multi-edit', [CarController::class, 'multiEdit'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::put('/cars/multi-edit/array', [CarController::class, 'saveMultiEdit'])->middleware(EnsureUserHasAdminRole::class);;
+
+    ### ROUTY PRO ZEMĚ 
+    Route::delete('/country/delete/{id}', [CountryController::class, 'countrydelete'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::get('/country/create', [CountryController::class, 'countrycreate'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::post('/country/add', [CountryController::class, 'countrysave'])->middleware(EnsureUserHasAdminRole::class);;
 
 });
 

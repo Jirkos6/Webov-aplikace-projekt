@@ -2,6 +2,8 @@
     <head>
     @vite('resources/css/app.css')
     <title>Rally Racing</title>
+    <meta charset="UTF-8">
+    
     </head>
     <body>
     <div class="navbar bg-primary text-primary-content">
@@ -22,6 +24,12 @@
       </div>
       <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-primary text-primary-content rounded-box w-52">
         @auth
+        <li>
+          <a href="{{ url('/download-pdf') }}" class="justify-between">
+            PDF soubory
+            <span class="badge">Nové</span>
+          </a>
+        </li>
         @if (Auth::user()->role == 'admin')
         <li>
           <a href="{{ url('/car') }}" class="justify-between">
@@ -65,6 +73,13 @@
         <li><a href="{{ url('/user/profile') }}">Profil</a></li>
         @endauth
         @guest
+        <li>
+          <a href="{{ url('/download-pdf') }}" class="justify-between">
+            PDF soubory
+            <span class="badge">Nové</span>
+          </a>
+        </li>
+        <li>
         <li>
         <a href="{{ url('/car') }}" class="justify-between">
             Tabulka auta

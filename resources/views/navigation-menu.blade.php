@@ -131,6 +131,9 @@
                                 {{ __('Přidávání zemí') }}
                             </x-dropdown-link>
                             @endif
+                            <x-dropdown-link href="{{ url('/download-pdf') }}">
+                                {{ __('PDF soubory') }}
+                            </x-dropdown-link>
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">

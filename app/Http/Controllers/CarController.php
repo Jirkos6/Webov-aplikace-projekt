@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Car;
-use App\Models\Company;
 use App\Models\Country;
-use App\Models\User;
-use Config;
 use Illuminate\Support\Facades\DB;
-
 
 class CarController extends Controller
 {
+    /**
+     * Zobrazí seznam aut s názvem země, kde bylo auto vyrobeno. Je využitý join který spojí "Country_id" v tabulce car s id v tabulce country.
+     *
+     * @return view 'car' s daty aut a názvy zemí, které jsou uložené v proměnné $data.
+     */
     public function car()
     {
         $data = Car::join('country', 'car.country_id', '=', 'country.id')->select('car.*', 'country.name as country_name')->orderBy('car.id')->paginate(10);
@@ -20,6 +21,11 @@ class CarController extends Controller
         return view('car', ['data' => $data]);
     }
     
+    /**
+     * Smaže auto podle daného ID a nastaví čas smazání v hodnotě int (sekundy).
+     * $id ID auta, které má být smazáno.
+     * return Vrací uživatele zpět na předchozí stránku s flash zprávou o úspěchu nebo chybě.
+     */
     public function delete($id)
     {
         try {
@@ -27,52 +33,123 @@ class CarController extends Controller
             $car->delete();   
             $car->delete_time = time(); 
             $car->save();
+            // Flash zpráva informuje uživatele o úspěšném smazání auta.
             return back()->with('success', 'Smazání proběhlo úspěšně!');
 
         } catch (\Exception $e) {
+            // Flash zpráva informuje uživatele o chybě při mazání auta.
             return back()->with('error', 'Smazání se nepovedlo: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Zobrazí formulář pro vytvoření nového auta. $date je využito pro to, aby se ve formuláři nedalo zadat datum které je větší než dnešek. 
+     *
+     * @return Vrací view 'create' s daty zemí a aktuálním datem.
+     */
     public function create()
     {
-        $companies = Company::all();
+        $data = Country::all();
         $date = date("Y-m-d");
-        return view('create', ['companies' => $companies, 'date' => $date]);
+        return view('create', ['data' => $data, 'date' => $date]);
     }
     
-
+    /**
+     * Uloží nové auto do databáze.
+     *
+     * @param  $request Data z formuláře pro vytvoření auta. Použita validace pro formulář, aby bylo povinné vybrat jiný řádek než je první v selectu (první řádek je disabled a je vybraný defaultně).
+     * @return  Vrací uživatele na view /car s flash zprávou o úspěchu nebo chybě.
+     * $car->save(); uloží data z formulářů do tabulky Car
+     */
     public function store(Request $request)
     {
         try {
             $car = new Car;
             $car->made = $request->input('made');
             $car->name = $request->input('name');
-            $car->Company_id = $request->input('Company_id');
+            $car->Country_id = $request->input('Country_id');
             $request->validate([
-                'Company_id' => 'required|not_in:0',
+                'Country_id' => 'required|not_in:0',
             ]);
             $car->save();
     
-            $company = Company::find($request->input('Company_id'))->name;
+            $country = country::find($request->input('Country_id'))->name;
         
-            $request->session()->flash('success', "Auto {$car->name} od výrobce {$company} bylo přidáno!");
+            // Flash zpráva informuje uživatele o úspěšném přidání auta.
+            $request->session()->flash('success', "Auto {$car->name} od výrobce {$country} bylo přidáno!");
             $car->create_time = time(); 
             $car->save();
             return redirect('/car'); 
         } catch (\Exception $e) {
             
+            // Flash zpráva informuje uživatele o chybě při přidávání auta.
             $request->session()->flash('error', "Nastala chyba při přidávání auta! {$e->getMessage()}");
     
             return back(); 
         }
     }
-    public function edit($id)
+
+    /**
+     * Zobrazí formulář pro úpravu auta podle daného ID, které vybereme v tabulce.
+     *
+     * @param  $name Název auta.
+     * @param  $id ID auta.
+     * @return  Vrací view 'edit' s daty auta, daty zemí a aktuálním datem, aby nešlo ve formuláři vybrat datum v budoucnosti. V proměnné $car jsou data z řádku tabulky podle id na které jsme klikli.
+     */
+    public function edit($name, $id)
     {
         $car = Car::findOrFail($id);
-        $companies = Company::all();
+        $data = Country::all();
         $date = date("Y-m-d");
-        return view('edit', ['car' => $car, 'companies' => $companies, 'date' => $date]);
+        return view('edit', ['car' => $car, 'data' => $data, 'date' => $date]);
     }
+
+    /**
+     * Aktualizuje auto v databázi podle daného ID.
+     *
+     * @param   $request vrací data z formuláře pro úpravu auta.
+     * @param   $id ID auta.
+     * $car->edit_time = time(); a $car->save(); uloží do sloupce edit_time přesný čas kdy došlo k úpravě.
+     * @return  Vrací uživatele na stránku /car s flash zprávou o úspěchu nebo chybě.
+     */
+
+public function multiEdit (Request $request)
+{
+   
+    $ids = explode(',', $request->query('id'));
+    $cars = Car::findMany($ids);
+    $data = Country::all();
+    $date = date("Y-m-d");
+    return view('multi-edit', ['cars' => $cars, 'data' => $data, 'date' => $date]);
+}
+
+
+public function saveMultiEdit (Request $request)
+{
+    try{
+    $ids = $request->input('ids');
+    $cars = Car::findMany($ids);
+    foreach ($cars as $car) {
+        $car->made = $request->input('made')[$car->id];
+        $car->name = $request->input('name')[$car->id];
+        $car->Country_id = $request->input('Country_id')[$car->id];
+        $car->edit_time = time(); 
+        $car->save();
+    }
+    
+    $request->session()->flash('success', "Auta byla úspěšně editována");
+    return redirect('/car'); 
+    }
+    catch (\Exception $e)  {
+        // Flash zpráva informuje uživatele o chybě při úpravě auta.
+        $request->session()->flash('error', "Nastala chyba při editaci aut! {$e->getMessage()}");
+        return redirect('/car'); 
+    
+    
+}
+}
+ 
+
 
     public function update(Request $request, $id)
     {
@@ -80,117 +157,20 @@ class CarController extends Controller
         $car = Car::findOrFail($id);
         $car->made = $request->input('made');
         $car->name = $request->input('name');
-        $car->Company_id = $request->input('Company_id');
-        $company = Company::find($request->input('Company_id'))->name;
+        $car->Country_id = $request->input('Country_id');
+        $country = Country::find($request->input('Country_id'))->name;
         $car->edit_time = time(); 
         $car->save();
-        $request->session()->flash('success', "Auto bylo editováno na {$car->name}, vyrobeno {$car->made} od společnosti {$company}!");
+        // Flash zpráva informuje uživatele o úspěšné úpravě auta.
+        $request->session()->flash('success', "Auto bylo editováno na {$car->name}, vyrobeno {$car->made} ze země {$country}!");
         return redirect('/car'); 
         }
         catch (\Exception $e)  {
+            $car = Car::findOrFail($id);
+            // Flash zpráva informuje uživatele o chybě při úpravě auta.
             $request->session()->flash('error', "Nastala chyba při editaci auta {$car->name}! {$e->getMessage()}");
             return redirect('/car'); 
         }
-    }
-    public function dashboardgraph()
-    {
-        $carCount = Car::all()->count();
-        $carMessage = $carCount == 0 ? 'Tabulka Cars neobsahuje žádné řádky!' : '';
     
-        $companyCount = Company::all()->count();
-        $companyMessage = $companyCount == 0 ? 'Tabulka Companies neobsahuje žádné řádky!' : '';
-    
-        $countryCount = Country::all()->count();
-        $countryMessage = $countryCount == 0 ? 'Tabulka Countries neobsahuje žádné řádky!' : '';
-
-        $userCount = User::all()->count();
-        $userMessage = $userCount == 0 ? 'Nejsou registrovaní žádní uživatelé!' : '';
-    
-
-        return view('dashboard', [
-            'carCount' => $carCount, 
-            'companyCount' => $companyCount, 
-            'countryCount' => $countryCount,
-            'carMessage' => $carMessage,
-            'companyMessage' => $companyMessage,
-            'countryMessage' => $countryMessage,
-            'userCount' => $userCount,
-            'userMessage' => $userMessage
-        ]);
     }
-    public function accountmanager()
-    {
-    $userCount = User::all()->count();  
-    $user = User::all(); 
-    $user = User::paginate(10);
-
-    return view('account-manager', ['userCount' => $userCount, 'user' => $user]);
-
-    }
-    public function accountdelete($id)
-    {
-        $user = User::find($id);
-        $user->delete();
-    
-        return redirect('/account/manager')->with('success', 'Uživatel úspěšně smazán!');
-    }
-    public function edituser($id)
-{
-    $userCount = User::all()->count(); 
-    $user = User::find($id);
-    return view('account-edit', ['user' => $user, 'userCount' => $userCount]);
-}
-    public function accountedit(Request $request, $id) {
-
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->role = $request->role;
-        $user->email = $request->email;
-        $user->save();
-        $request->session()->flash('success', "Nové jméno uživatele je {$user->name}, role {$user->role} a email {$user->email}!");
-        return redirect('/account/manager');
-
-    }
-    public function country() {
-    
-    $data = Country::all();
-    $paginate = Config::get('pagination.pagination');
-    $data = Country::paginate($paginate);
-    return view('country', ['data' => $data]);
-    }
-
-    public function countrydelete($id)
-    {
-        $country = Country::find($id);
-        $country->delete();
-    
-        return redirect('/country')->with('success', 'Země úspěšně smazána!');
-    }
-
-    public function countrycreate()
-    {
-    $country = Country::all();
-    return view('countrycreate', ['country' => $country]);
-    }
-    public function countrysave(Request $request)
-{
-    $request->validate([
-        'name' => 'required',
-        'shortcut' => 'required',
-        'flag' => 'required|image|mimes:jpeg,png|max:2048',
-    ]);
-
-    $imageName = time().'.'.$request->flag->extension();  
-    $request->flag->move(public_path('obrazky'), $imageName);
-
-    $country = new Country;
-    $country->name = $request->name;
-    $country->shortcut = $request->shortcut;
-    $country->flag = $imageName;
-    $country->save();
-
-    return back()
-        ->with('success',"Země '{$country->name}' se zkratkou '{$country->shortcut}' s obrázkem '/public/obrazky/{$country->flag}' byla vytvořena")
-        ->with('image',$imageName);
-}
 }

@@ -23,13 +23,13 @@
         </div>
 
         <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="Company_id">
-                Výrobce:
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="Country_id">
+                Země:
             </label>
-            <select class="bg-accent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-accent-outline" id="Company_id" name="Company_id" required>
-            <option selected disabled class="info-content">Vyberte výrobce</option>
-                @foreach ($companies as $company)
-                    <option value="{{ $company->id }}" {{ $car->Company_id == $company->id ? 'selected' : '' }}>{{ $company->name }}</option>
+            <select class="bg-accent appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-accent-outline" id="Country_id" name="Country_id" required>
+            <option selected disabled class="info-content">Vyberte zemi</option>
+                @foreach ($data as $country)
+                    <option value="{{ $country->id }}" {{ $car->Country_id == $country->id ? 'selected' : '' }}>{{ $country->name }}</option>
                 @endforeach
             </select>
         </div>

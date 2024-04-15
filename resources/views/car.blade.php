@@ -6,21 +6,38 @@ document.addEventListener('DOMContentLoaded', function () {
     var modal = document.getElementById("myModal");
     var form = document.getElementById('deleteForm');
     var deleteButton = document.querySelector('.btn.btn-outline.btn-error');
-    document.querySelector('.btn.btn-outline.btn-primary').addEventListener('click', closeModal)
+    var editButton = document.querySelector('.btn.btn-outline.btn-primary');
+    var multieditbutton = document.querySelector('.btn.btn-outline.btn-ghost');
+  
+
+    document.querySelector('.btn.btn-outline.btn-primary').addEventListener('click', closeModal);
     this.setFormAction = function(carId) {
         form.action = '/car/' + carId;
         modal.classList.remove("hidden");
         deleteButton.dataset.id = carId;
     }
-
-     var modalHandler = {
-  openModal: setFormAction}
-
-  function closeModal () {
-      
-        modal.classList.add("hidden");
+ 
+    multieditbutton.addEventListener('click', function() {
+        var selectedIds = [];
+        var checkboxes = document.querySelectorAll('.item-checkbox:checked');
+        console.log("test");
+        checkboxes.forEach(function(checkbox) {
+            selectedIds.push(checkbox.dataset.id);
+        });
+        if (selectedIds.length > 0) {
+            window.location.href = '/cars/multi-edit?id=' + selectedIds.join(',');
+        } else {
+            console.log('No items selected for editing.');
+        }
+    });
+    });
+    var modalHandler = {
+        openModal: setFormAction
     }
 
+    function closeModal () {
+        modal.classList.add("hidden");
+    }
 
     var btns = document.querySelectorAll('.btn.btn-outline.btn-error');
     btns.forEach(function(btn) {
@@ -30,10 +47,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-
-});
+  
 
 </script>
+
 <br>
 @if (session('success'))
     <br>
@@ -45,20 +62,21 @@ document.addEventListener('DOMContentLoaded', function () {
 @endif
 
 @if (session('error'))
-
     <br>
     <div class="alert alert-danger">
         {{ session('error') }}
     </div>
     <br>
     <br>
-    @endif
-    @if($data->isEmpty())
+@endif
+
+@if($data->isEmpty())
     <p>Nebyla nalezena žádná auta</p>
 @else
     <table class="table-auto w-full">
         <thead>
             <tr>
+                <th class="px-4 py-2 text-left">Select</th>
                 <th class="px-4 py-2 text-left">ID</th>
                 <th class="px-4 py-2 text-left">Název</th>
                 <th class="px-4 py-2 text-left">Datum výroby</th>
@@ -68,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <tbody>
             @foreach ($data as $car)
                 <tr>
+                    <td class="border px-4 py-2"><input type="checkbox" class="item-checkbox" data-id="{{ $car->id }}"></td>
                     <td class="border px-4 py-2">{{ $car->id }}</td>
                     <td class="border px-4 py-2">{{ $car->name }}</td>
                     <td class="border px-4 py-2">{{ $car->made }}</td>
@@ -76,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     @if (Auth::user()->role == 'admin')
                     <td class="border px-4 py-2"><button class="btn btn-outline btn-error" data-id="{{ $car->id }}" onclick="setFormAction('{{ $car->id }}')">Smazat</button></td>
                     <td class="border px-4 py-2"></td>
-                    <td class="border px-4 py-2"><a href="/cars/{{ $car->id }}/edit" class="btn btn-outline btn-warning">Editovat</a></td>
+                    <td class="border px-4 py-2"><a href="/{{ $car->name }}/{{ $car->id }}/edit" class="btn btn-outline btn-warning">Editovat</a></td>
                     @endif
                    @endauth
                 </tr>
@@ -84,6 +103,11 @@ document.addEventListener('DOMContentLoaded', function () {
         </tbody>
     </table>
 @endif
+<br>
+
+&nbsp; <button id="editButton" class="btn btn-outline btn-ghost">Editovat vybrané řádky</button>
+
+
 
 
 <div id="myModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -108,10 +132,6 @@ document.addEventListener('DOMContentLoaded', function () {
     @method('DELETE')
     <button class="btn btn-outline btn-error" type="submit">Smazat</button>
 </form>
-
-
-
-
         &nbsp;&nbsp;&nbsp;
         <button type="button" class="btn btn-outline btn-primary" id="cancelButton">
   Zrušit

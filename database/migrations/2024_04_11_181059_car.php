@@ -16,8 +16,8 @@ return new class extends Migration{
             $table->increments('id');
             $table->string('name');
             $table->date('made');
-            $table->integer('Company_id')->unsigned();
-            $table->foreign('Company_id')->references('id')->on('Company')->onDelete('no action')->onUpdate('no action');
+            $table->integer('Country_id')->unsigned();
+            $table->foreign('Country_id')->references('id')->on('Country')->onDelete('no action')->onUpdate('no action');
             $table->date('deleted_at')->nullable()->default(null);
             $table->date('created_at')->nullable()->default(null);
             $table->date('updated_at')->nullable()->default(null);
