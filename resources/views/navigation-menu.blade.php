@@ -22,6 +22,11 @@
                         {{ __('Správa účtů') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="/telescope" :active="request()->routeIs('/telescope')" target="_blank">
+                        {{ __('Telescope') }}
+                    </x-nav-link>
+                </div>
                 @endif
             </div>
 
@@ -133,6 +138,9 @@
                             @endif
                             <x-dropdown-link href="{{ url('/download-pdf') }}">
                                 {{ __('PDF soubory') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ url('/import') }}">
+                                {{ __('CSV soubory') }}
                             </x-dropdown-link>
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())

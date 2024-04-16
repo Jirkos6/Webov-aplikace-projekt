@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\CsvController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\PdfController;
@@ -39,10 +40,11 @@ Route::get('/country-pdf', [PdfController::class, 'streamCountryPDF']);
 Route::get('/company-pdf', [PdfController::class, 'streamCompanyPDF']);
 Route::get('/car-pdf', [PdfController::class, 'streamCarPDF']);
 
-Route::get('/country-data', [PdfController::class, 'streamCountryPDF']);
-Route::get('/company-data', [PdfController::class, 'streamCompanyPDF']);
-Route::get('/car-data', [PdfController::class, 'streamCarPDF']);
 
+### ROUTY PRO CSV 
+Route::get('/import', [CsvController::class, 'importView'])->name('importForm');
+Route::post('/import', [CsvController::class, 'import'])->name('import');
+Route::get('/export', [CsvController::class, 'export'])->name('export');
 
 
 
@@ -54,6 +56,7 @@ Route::middleware([
 
     ### ROUTY PRO SPRÁVU ÚČTŮ / DASHBOARD
     Route::get('/dashboard', [UserController::class, 'dashboardgraph'])->name('dashboard');
+    Route::get('/dashboard/pulse', [UserController::class, 'dashboardpulse'])->name('dashboard-pulse');
     Route::get('/account/manager', [UserController::class, 'accountmanager'])->name('account-manager')->middleware(EnsureUserHasAdminRole::class);;
     Route::delete('/user/{id}', [UserController::class, 'accountdelete'])->name('account.delete')->middleware(EnsureUserHasAdminRole::class);;
     Route::put('/edituser/{id}', [UserController::class, 'accountedit'])->name('account.edit')->middleware(EnsureUserHasAdminRole::class);;  

@@ -19,13 +19,13 @@ class UserController extends Controller
     public function dashboardgraph()
     {
         $carCount = Car::all()->count();
-        $carMessage = $carCount == 0 ? 'Tabulka Cars neobsahuje žádné řádky!' : '';
+        $carMessage = $carCount == 0 ? 'Tabulka Car neobsahuje žádné řádky!' : '';
     
         $companyCount = Company::all()->count();
-        $companyMessage = $companyCount == 0 ? 'Tabulka Companies neobsahuje žádné řádky!' : '';
+        $companyMessage = $companyCount == 0 ? 'Tabulka Company neobsahuje žádné řádky!' : '';
     
         $countryCount = Country::all()->count();
-        $countryMessage = $countryCount == 0 ? 'Tabulka Countries neobsahuje žádné řádky!' : '';
+        $countryMessage = $countryCount == 0 ? 'Tabulka Country neobsahuje žádné řádky!' : '';
 
         $userCount = User::all()->count();
         $userMessage = $userCount == 0 ? 'Nejsou registrovaní žádní uživatelé!' : '';
@@ -100,5 +100,8 @@ class UserController extends Controller
         $user->save();
         $request->session()->flash('success', "Nové jméno uživatele je {$user->name}, role {$user->role} a email {$user->email}!");
         return redirect('/account/manager');
+    }
+    public function dashboardpulse() {
+        return view("dashboard-pulse");
     }
 }

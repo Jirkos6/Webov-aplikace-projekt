@@ -25,6 +25,12 @@
       <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-primary text-primary-content rounded-box w-52">
         @auth
         <li>
+          <a href="{{ url('/import') }}" class="justify-between">
+            CSV soubory
+            <span class="badge">Nové</span>
+          </a>
+        </li>
+        <li>
           <a href="{{ url('/download-pdf') }}" class="justify-between">
             PDF soubory
             <span class="badge">Nové</span>
@@ -76,6 +82,12 @@
         <li>
           <a href="{{ url('/download-pdf') }}" class="justify-between">
             PDF soubory
+            <span class="badge">Nové</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url('/import') }}" class="justify-between">
+            CSV soubory
             <span class="badge">Nové</span>
           </a>
         </li>

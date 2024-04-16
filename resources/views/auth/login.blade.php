@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
@@ -16,13 +17,16 @@
             @csrf
 
             <div>
-                <x-label for="email" value="{{ __('E-mail') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            </div>
+    <x-label for="identity" value="{{ __('Uživatelské jméno nebo E-mail') }}" />
+    <x-input id="identity" class="block mt-1 w-full" type="text" name="identity" :value="old('identity')" required autofocus autocomplete="username" />
+</div>
 
-            <div class="mt-4">
+
+
+            <div class="mt-4 relative">
                 <x-label for="password" value="{{ __('Heslo') }}" />
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+                <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
             </div>
 
             <div class="block mt-4">
@@ -46,3 +50,28 @@
         </form>
     </x-authentication-card>
 </x-guest-layout>
+
+<style>
+.field-icon {
+  float: right;
+  
+  margin-top: -30px;
+  margin-right: 10px;
+  z-index: 2;
+  color: gray;
+}
+</style>
+
+<script>
+var togglePassword = document.querySelector('.toggle-password');
+togglePassword.addEventListener('click', function (e) {
+    var passwordInput = document.querySelector(e.currentTarget.getAttribute('toggle'));
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        this.classList.replace('fa-eye', 'fa-eye-slash'); 
+    } else {
+        passwordInput.type = 'password';
+        this.classList.replace('fa-eye-slash', 'fa-eye'); 
+    }
+});
+</script>
