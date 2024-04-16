@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('Country', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('shortcut', 5);
+            $table->string('shortcut');
             $table->string('flag');
             $table->date('deleted_at')->nullable()->default(null);
             $table->date('created_at')->nullable()->default(null);
