@@ -17,9 +17,9 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->integer('Country_id')->unsigned();
             $table->foreign('Country_id')->references('id')->on('Country')->onDelete('no action')->onUpdate('no action');
-            $table->date('deleted_at')->nullable()->default(null);
-            $table->date('created_at')->nullable()->default(null);
-            $table->date('updated_at')->nullable()->default(null);
+            $table->datetime('deleted_at')->nullable()->default(null);
+            $table->datetime('created_at')->nullable()->default(null);
+            $table->datetime('updated_at')->nullable()->default(null);
 
         });
     }
