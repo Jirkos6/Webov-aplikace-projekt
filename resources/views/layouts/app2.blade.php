@@ -1,11 +1,12 @@
 <html>
     <head>
-    @vite('resources/css/app.css')
+
     <title>Rally Racing</title>
     <meta charset="UTF-8">
-    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
+    
     <div class="navbar bg-primary text-primary-content">
 
   <div class="flex-1">

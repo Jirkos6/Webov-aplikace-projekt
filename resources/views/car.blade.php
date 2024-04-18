@@ -1,65 +1,6 @@
 @extends('layouts.app2')
 @section('content')
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var modal = document.getElementById("myModal");
-    var form = document.getElementById('deleteForm');
-    var deleteButton = document.querySelector('.btn.btn-outline.btn-error');
-    var editButton = document.querySelector('.btn.btn-outline.btn-primary');
-    var multieditbutton = document.querySelector('.btn.btn-outline.btn-ghost');
-    var multiaddbutton = document.getElementById('addButton');
-    var numberInput = document.getElementById('numberInput');
-
-  
-
-    document.querySelector('.btn.btn-outline.btn-primary').addEventListener('click', closeModal);
-    this.setFormAction = function(carId) {
-        form.action = '/car/' + carId;
-        modal.classList.remove("hidden");
-        deleteButton.dataset.id = carId;
-    }
-    multiaddbutton.addEventListener('click', function() {
-        var enteredId = numberInput.value; 
-        if (enteredId) {
-            window.location.href = '/cars/multi-create?value=' + enteredId;
-        } else {
-            console.log('Nebylo vloženo žádné číslo.');
-        }
-    });
-    multieditbutton.addEventListener('click', function() {
-        var selectedIds = [];
-        var checkboxes = document.querySelectorAll('.item-checkbox:checked');
-        console.log("test");
-        checkboxes.forEach(function(checkbox) {
-            selectedIds.push(checkbox.dataset.id);
-        });
-        if (selectedIds.length > 0) {
-            window.location.href = '/cars/multi-edit?id=' + selectedIds.join(',');
-        } else {
-            console.log('No items selected for editing.');
-        }
-    });
-    });
-    var modalHandler = {
-        openModal: setFormAction
-    }
-
-    function closeModal () {
-        modal.classList.add("hidden");
-    }
-
-    var btns = document.querySelectorAll('.btn.btn-outline.btn-error');
-    btns.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            var carId = this.dataset.id;
-            modalHandler.openModal(carId);
-        });
-    });
-
-  
-
-</script>
 
 <br>
 @if (session('success'))
@@ -119,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
 @endif
 <br>
 @if (Auth::user()->role == 'admin')
-&nbsp; <button id="editButton" class="btn btn-outline btn-ghost">Editovat vybrané řádky</button> &nbsp; &nbsp; 
+&nbsp; <button id="MultieditButton" class="btn btn-outline btn-ghost">Editovat vybrané řádky</button> &nbsp; &nbsp; 
 <input
                 id="numberInput"
                 type="number"
@@ -158,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <form id="deleteForm" method="POST">
     @csrf
     @method('DELETE')
-    <button class="btn btn-outline btn-error" type="submit">Smazat</button>
+    <button class="btn btn-outline btn-error" type="submit" id="deleteButton1">Smazat</button>
 </form>
         &nbsp;&nbsp;&nbsp;
         <button type="button" class="btn btn-outline btn-primary" id="cancelButton">
