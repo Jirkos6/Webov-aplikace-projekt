@@ -31,8 +31,7 @@ class CarController extends Controller
         try {
             $car = Car::find($id);
             $car->delete();   
-            $car->delete_time = time(); 
-            $car->save();
+
             // Flash zpráva informuje uživatele o úspěšném smazání auta.
             return back()->with('success', 'Smazání proběhlo úspěšně!');
 
@@ -77,8 +76,7 @@ class CarController extends Controller
         
             // Flash zpráva informuje uživatele o úspěšném přidání auta.
             $request->session()->flash('success', "Auto {$car->name} od výrobce {$country} bylo přidáno!");
-            $car->create_time = time(); 
-            $car->save();
+
             return redirect('/car'); 
         } catch (\Exception $e) {
             

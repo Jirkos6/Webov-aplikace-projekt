@@ -10,16 +10,16 @@
 >DB_PASSWORD=
 
 ### 3. Otevřeme si terminál v hlavní složce projektu a zadáme příkazy
-php artisan serve
-npm run build
-npm run dev 
+>php artisan serve
+>npm run build
+>npm run dev 
 
 >Pokud se vám zobrazí error "'vite' is not recognized as an internal or external command, operable program or batch file." použijte "npm install vite --save-dev" a použijte příkazy znovu
 
 ### 4. Použijeme migrace v projektu pro vytvoření tabulek v databázi (v případě že nepoužíváme už vytvořené tabulky importované přes sql soubor)
 >php artisan migrate
 
-### 5. Použijeme "seeding" pro vyplnění náhodných dat do tabulek před tímto krokem se musí vložit aspoň jeden sloupec do tabulky "country" a "company"
+### 5. Použijeme "seeding" pro vyplnění náhodných dat do tabulek před tímto krokem se musí vložit aspoň jeden řádek do tabulky "country"
 >php artisan db:seed
 
 ### 6. Provedeme registraci zde (pokud je projekt nainstalovaný lokálně):

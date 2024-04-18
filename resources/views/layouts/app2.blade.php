@@ -65,7 +65,7 @@
           </a>
         </li>
         <li>
-          <a href="{{ url('/cpuntry') }}" class="justify-between">
+          <a href="{{ url('/country') }}" class="justify-between">
             Země
             <span class="badge">Nové</span>
           </a>

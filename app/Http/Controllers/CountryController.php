@@ -71,7 +71,7 @@ class CountryController extends Controller
         $country = new Country;
         $country->name = $request->name;
         $country->shortcut = $request->shortcut;
-        $country->flag = $imageName; // Uložení názvu souboru obrázku do databáze.
+        $country->flag = $imageName; 
         $country->save();
 
         return back()

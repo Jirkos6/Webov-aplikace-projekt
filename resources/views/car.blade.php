@@ -76,7 +76,9 @@ document.addEventListener('DOMContentLoaded', function () {
     <table class="table-auto w-full">
         <thead>
             <tr>
+            @if (Auth::user()->role == 'admin')
                 <th class="px-4 py-2 text-left">Select</th>
+                @endif
                 <th class="px-4 py-2 text-left">ID</th>
                 <th class="px-4 py-2 text-left">Název</th>
                 <th class="px-4 py-2 text-left">Datum výroby</th>
@@ -86,7 +88,9 @@ document.addEventListener('DOMContentLoaded', function () {
         <tbody>
             @foreach ($data as $car)
                 <tr>
+                @if (Auth::user()->role == 'admin')
                     <td class="border px-4 py-2"><input type="checkbox" class="item-checkbox" data-id="{{ $car->id }}"></td>
+                    @endif
                     <td class="border px-4 py-2">{{ $car->id }}</td>
                     <td class="border px-4 py-2">{{ $car->name }}</td>
                     <td class="border px-4 py-2">{{ $car->made }}</td>
@@ -104,9 +108,9 @@ document.addEventListener('DOMContentLoaded', function () {
     </table>
 @endif
 <br>
-
+@if (Auth::user()->role == 'admin')
 &nbsp; <button id="editButton" class="btn btn-outline btn-ghost">Editovat vybrané řádky</button>
-
+@endif
 
 
 
