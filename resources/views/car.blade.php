@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var deleteButton = document.querySelector('.btn.btn-outline.btn-error');
     var editButton = document.querySelector('.btn.btn-outline.btn-primary');
     var multieditbutton = document.querySelector('.btn.btn-outline.btn-ghost');
+    var multiaddbutton = document.getElementById('addButton');
+    var numberInput = document.getElementById('numberInput');
+
   
 
     document.querySelector('.btn.btn-outline.btn-primary').addEventListener('click', closeModal);
@@ -16,7 +19,14 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.classList.remove("hidden");
         deleteButton.dataset.id = carId;
     }
- 
+    multiaddbutton.addEventListener('click', function() {
+        var enteredId = numberInput.value; 
+        if (enteredId) {
+            window.location.href = '/cars/multi-create?value=' + enteredId;
+        } else {
+            console.log('Nebylo vloženo žádné číslo.');
+        }
+    });
     multieditbutton.addEventListener('click', function() {
         var selectedIds = [];
         var checkboxes = document.querySelectorAll('.item-checkbox:checked');
@@ -109,7 +119,21 @@ document.addEventListener('DOMContentLoaded', function () {
 @endif
 <br>
 @if (Auth::user()->role == 'admin')
-&nbsp; <button id="editButton" class="btn btn-outline btn-ghost">Editovat vybrané řádky</button>
+&nbsp; <button id="editButton" class="btn btn-outline btn-ghost">Editovat vybrané řádky</button> &nbsp; &nbsp; 
+<input
+                id="numberInput"
+                type="number"
+                class="w-24 px-2 py-1 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                min="1"
+                
+               
+            />
+            <button
+                id="addButton"
+                class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+            >
+                Přidat
+            </button>
 @endif
 
 

@@ -72,7 +72,9 @@ Route::middleware([
     ### AUTA MULTI-EDIT
     Route::get('/cars/multi-edit', [CarController::class, 'multiEdit'])->middleware(EnsureUserHasAdminRole::class);;
     Route::put('/cars/multi-edit/array', [CarController::class, 'saveMultiEdit'])->middleware(EnsureUserHasAdminRole::class);;
-
+    ### AUTA MULTI-ADD
+    Route::get('/cars/multi-create', [CarController::class, 'multiCreate'])->middleware(EnsureUserHasAdminRole::class);;
+    Route::post('/cars/multi-create/store', [CarController::class, 'multiStore'])->middleware(EnsureUserHasAdminRole::class);;
     ### ROUTY PRO ZEMĚ 
     Route::delete('/country/delete/{id}', [CountryController::class, 'countrydelete'])->middleware(EnsureUserHasAdminRole::class);;
     Route::get('/country/create', [CountryController::class, 'countrycreate'])->middleware(EnsureUserHasAdminRole::class);;

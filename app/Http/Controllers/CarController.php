@@ -86,7 +86,40 @@ class CarController extends Controller
             return back(); 
         }
     }
+    public function multiCreate(Request $request)
+    {
+        $value = $request->query('value');
+        $count = explode(',', $value);
+        $number = $count[0];
+        $data = Country::all();
+        $date = date("Y-m-d");
+        return view('multi-create', ['data' => $data, 'date' => $date, 'number' => $number]);
+    }
+    
 
+    public function multiStore(Request $request)
+    {
+        try {
+            $carsData = $request->input('cars'); 
+    
+            foreach ($carsData as $carData) {
+                $car = new Car;
+                $car->made = $carData['made'];
+                $car->name = $carData['name'];
+                $car->Country_id = $carData['Country_id'];
+                $car->save();
+            }
+    
+            $request->session()->flash('success', "Auta byla úspěšně přidána!");
+    
+            return redirect('/car');
+        } catch (\Exception $e) {
+    
+            $request->session()->flash('error', "Nastala chyba při přidávání aut! {$e->getMessage()}");
+            return back();
+        }
+    }
+    
     /**
      * Zobrazí formulář pro úpravu auta podle daného ID, které vybereme v tabulce.
      *
