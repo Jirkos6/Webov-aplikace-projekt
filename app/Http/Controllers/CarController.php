@@ -16,8 +16,8 @@ class CarController extends Controller
      */
     public function car()
     {
-        $data = Car::join('country', 'car.country_id', '=', 'country.id')->select('car.*', 'country.name as country_name')->orderBy('car.id')->paginate(10);
-    
+        $paginate = Config::get('pagination.pagination');
+        $data = Car::join('country', 'car.country_id', '=', 'country.id')->select('car.*', 'country.name as country_name')->orderBy('car.id')->paginate($paginate);
         return view('car', ['data' => $data]);
     }
     
